@@ -81,7 +81,7 @@ function allocateMemory(self::StandardSolver)
 
     # Determine the number of FSRs
     geometry = self._track_generator._geometry
-    self._num_FSRs = geometry._num_x * geometry._num_y
+    self._num_FSRs = getNumCells(geometry)
     self._num_groups = getNumEnergyGroups(geometry)
 
     # Allocate angular fluxes
@@ -91,7 +91,6 @@ function allocateMemory(self::StandardSolver)
                                  self._num_groups * self._num_polar_2)
 
     # Allocate scalar fluxes
-    self._num_FSRs = getNumCells(geometry)
     self._scalar_fluxes = Array(Float64, self._num_FSRs * self._num_groups)
     self._old_scalar_fluxes = Array(Float64, self._num_FSRs * self._num_groups)
 
@@ -237,7 +236,6 @@ end
 function addSourceToScalarFlux(self::StandardSolver)
 
     geometry = self._track_generator._geometry
-    
     # Add source term and normalize flux for each FSR
     for i = 1:geometry._num_x
         for j = 1:geometry._num_y
@@ -329,7 +327,7 @@ function computeKeff(self::StandardSolver)
 
     # Compute the total fission source
     geometry = self._track_generator._geometry
-    fission_source = 0.0
+    fission_source = 0.0 
     for i = 1:geometry._num_x
         for j = 1:geometry._num_y
             id = getFSRId(geometry, i, j)
