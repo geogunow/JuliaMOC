@@ -262,7 +262,9 @@ function traceTracks(self::TrackGenerator)
 
                 # Create the Segment
                 seg = Segment(fsr_id, dist)
-                push!(self._tracks[a][i]._segments, seg)
+                if seg._length > 1e-12
+                    push!(self._tracks[a][i]._segments, seg)
+                end
             end
         end
     end

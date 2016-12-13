@@ -420,6 +420,11 @@ function computeEigenvalue(self::StandardSolver)
         storeFSRFluxes(self)
         println("[RESULT]", "\t\t", iter, "\t\t", round(self._k_eff,5),
                 "\t\t", res)
+        
+        if abs(self._k_eff) > 100.0
+            println("[ERROR]\t\tFailed to converge eigenvalue")
+            break
+        end
 
         # Check for convergence
         if (iter > 2 && res < self._convergence_thresh)

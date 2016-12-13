@@ -6,6 +6,7 @@ include("src/TrackGenerator.jl")
 include("src/PolarQuad.jl")
 include("src/StandardSolver.jl")
 include("src/SparseSolver.jl")
+include("src/MOCMatrixSolver.jl")
 
 # Define material properties
 fuel = Material(1)
@@ -32,10 +33,13 @@ setMesh(g, mesh)
 
 # Create the TrackGenerator
 T = TrackGenerator(g)
-generateTracks(T, 10.0, 4)
+generateTracks(T, 20.0, 4)
 traceTracks(T)
 
 # Create the Solver and compute the eigenvalue
 #S = StandardSolver(T, 3)
-S = SparseSolver(T, 3)
-computeEigenvalue(S)
+#S = SparseSolver(T, 3)
+#S._use_eigs = true
+#S._lag_scattering = false
+S = MOCMatrixSolver(T, 3)
+@time computeEigenvalue(S)
